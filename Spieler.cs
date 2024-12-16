@@ -1,43 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace WerwolfFIUS2024
 {
-
-    public enum Rolle
-    //Hier definieren wir die Rollen die es geben soll
-    //(Enum ist für die Aufzählung der Werte)
+    internal class Spieler
     {
-        Dorfbewohner,
-        Seher,
-        Werwolf
-    }
-    public class Spieler
+        public string Name { get; set; }
+        public string Rolle { get; private set; }
+        public int Nummer { get; private set; }
+        public bool IstAmLeben { get; set; }
 
-    {
-        //Hier erstelle ich die Eigenschaften für die Spieler
-        public string Name { get; private set; }
-        public Rolle SpielerRolle { get; private set; }
-        public bool Lebendig { get; set; }
-
-
-        public Spieler(string name, Rolle rolle)
-            //Konstruktor fürs erstellen eines neuen Spielers.
+        public Spieler(string name, int nummer)
         {
             Name = name;
-            Lebendig = true;
-            SpielerRolle = rolle;
-        }
-        public override string ToString()
-            //Darstellung des Spielers mit der überschreibung des Strings.
-        {
-            // dieser code soll mir den namen und die Rolle des Spielers als String zurückgeben.
-            return $"{Name} ({SpielerRolle})";
+            Nummer = nummer;
+            IstAmLeben = true;
         }
 
+        public void SetzeRolle(string rolle)
+        {
+            Rolle = rolle;
+        }
 
     }
+
+
 }
+    
+
