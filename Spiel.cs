@@ -31,6 +31,8 @@ namespace WerwolfFIUS2024
                 string name = Console.ReadLine();
                 SpielerListe.Add(new Spieler(name, i));
             }
+            Console.ReadKey();
+            Console.Clear();
         }
 
         private void VerteileRollen() //hier werden die Rollen nach der Namenseingabe veteilt.
@@ -52,8 +54,15 @@ namespace WerwolfFIUS2024
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.WriteLine("𝑒𝑡𝑤𝑎𝑠 𝑓𝑙ü𝑠𝑡𝑒𝑟𝑡 𝑑𝑖𝑟 𝑧𝑢 ..."); //dies soll ein flüstern visualisieren in der Konsole
                 Console.ForegroundColor = ConsoleColor.Blue;
-                Console.WriteLine($"{spieler.Name}, deine Rolle ist: {spieler.Rolle}");
+                Console.WriteLine($"{spieler.Name}, deine Rolle ist: ");
                 Console.ResetColor();
+                Console.ReadKey();
+                Console.WriteLine($"{spieler.Rolle}");
+                Console.ReadKey();
+                Console.Clear();
+                
+               
+
             }
         }
 
@@ -73,15 +82,22 @@ namespace WerwolfFIUS2024
 
         private void NachtPhase()
         {
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.Clear();
             Console.WriteLine("Nachtphase beginnt...");
             WerwolfAktion();
             SeherAktion();
+            Console.ResetColor();
         }
 
         private void TagPhase()
         {
+            Console.BackgroundColor = ConsoleColor.DarkYellow;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Clear();
             Console.WriteLine("Tagphase beginnt...");
             SpielerAbstimmung();
+            Console.ResetColor();
         }
 
         private void WerwolfAktion() //hier wird die Aktion der Wölfe zur Nacht erstellt
@@ -103,9 +119,11 @@ namespace WerwolfFIUS2024
 
             var getoeteterSpieler = SpielerListe.First(s => s.Nummer == gewaehlteNummer);
             getoeteterSpieler.IstAmLeben = false;
-            Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.WriteLine($"{getoeteterSpieler.Name} wurde in der Nacht eliminiert. Rolle: {getoeteterSpieler.Rolle}");
-            Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine($"{getoeteterSpieler.Name} wurde in der Nacht eliminiert, die Rolle war : {getoeteterSpieler.Rolle}");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.ReadKey();
+            Console.Clear();
         }
 
         private void SeherAktion() //hier sind die Funkionen des Seher zur Nacht 
@@ -126,9 +144,10 @@ namespace WerwolfFIUS2024
             } while (!int.TryParse(Console.ReadLine(), out gewaehlteNummer) || !SpielerListe.Any(s => s.Nummer == gewaehlteNummer && s.IstAmLeben));
 
             var untersuchterSpieler = SpielerListe.First(s => s.Nummer == gewaehlteNummer);
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"Der Spieler {untersuchterSpieler.Name} hat die Rolle: {untersuchterSpieler.Rolle}");
-            Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.WriteLine($"Der Spieler {untersuchterSpieler.Name} hat die Rolle: {untersuchterSpieler.Rolle}");        
+            Console.ReadKey();
+            Console.Clear();
         }
 
         private void SpielerAbstimmung() //Tagsüber wird gevotet wer gehängt werden soll
@@ -150,6 +169,8 @@ namespace WerwolfFIUS2024
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine($"{gelynchterSpieler.Name} wurde gelyncht. Rolle: {gelynchterSpieler.Rolle}");
             Console.ResetColor();
+            Console.ReadKey();
+            Console.Clear();
         }
 
         private bool SpielLaeuft() //hier wird überprüft ob die Spiebedingungen weiterhin gegeben sind und noch Wölfe bzw Dorfewohner vorhanden sind.
