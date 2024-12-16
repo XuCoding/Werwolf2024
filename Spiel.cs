@@ -45,7 +45,7 @@ namespace WerwolfFIUS2024
 
         private void ZeigeRollen()
         {
-            foreach (var spieler in SpielerListe) //hier bekommen die Spieler ihre Rolle migeteilt, im Schritt obendrüber werden sie random verteilt.
+            foreach (var spieler in SpielerListe) //hier bekommen die Spieler ihre Rolle mitgeteilt.
             {
                 //mit diesem Befehl kann ich die UTF8 Unicode - Zeichen nutzen (der kursive Text, vorher gab er mir nur ?????? aus)
                 Console.OutputEncoding = System.Text.Encoding.UTF8;                 
