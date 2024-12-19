@@ -179,8 +179,7 @@ namespace WerwolfFIUS2024
                     Console.Write("\nDeine Stimme geht an Spieler (Nummer): ");
                 } while (!int.TryParse(Console.ReadLine(), out gewaehlteNummer) || !stimmen.ContainsKey(gewaehlteNummer));
 
-                stimmen[gewaehlteNummer]++;
-                Console.ReadKey();
+                stimmen[gewaehlteNummer]++;      
                 Console.Clear();
             }
 
@@ -203,7 +202,7 @@ namespace WerwolfFIUS2024
                 gelynchterSpieler.IstAmLeben = false;
 
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"{gelynchterSpieler.Name} wurde gelyncht. Rolle: {gelynchterSpieler.Rolle}");
+                Console.WriteLine($"Spieler {gelynchterSpieler.Name} wurde gelyncht. Die Rolle war:  {gelynchterSpieler.Rolle}");
                 Console.ResetColor();
             }
 
