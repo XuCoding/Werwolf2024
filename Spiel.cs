@@ -150,25 +150,63 @@ namespace WerwolfFIUS2024
             Console.Clear();
         }
 
-        private void SpielerAbstimmung() //Tagsüber wird gevotet wer gehängt werden soll
+        private void SpielerAbstimmung()
         {
-            Console.WriteLine("Abstimmung: Wer soll gelyncht werden? (Nummer eingeben)");
+            Console.WriteLine("Abstimmung: Jeder Spieler gibt eine Stimme ab. Wer die meisten Stimmen erhält, wird gelyncht.");
+            var stimmen = new Dictionary<int, int>();
+            Console.ReadKey();
+            Console.Clear();
+
+            // Initialisiere die Stimmenanzahl für jeden Spieler
             foreach (var spieler in SpielerListe.Where(s => s.IstAmLeben))
             {
-                Console.WriteLine($"Spieler {spieler.Nummer}: {spieler.Name}");
+                stimmen[spieler.Nummer] = 0;
             }
 
-            int gewaehlteNummer;
-            do
+            // Jeder lebende Spieler gibt eine Stimme ab
+            foreach (var abstimmenderSpieler in SpielerListe.Where(s => s.IstAmLeben))
             {
-                Console.Write("Votet für die Nummer die gelyncht werden soll: ");
-            } while (!int.TryParse(Console.ReadLine(), out gewaehlteNummer) || !SpielerListe.Any(s => s.Nummer == gewaehlteNummer && s.IstAmLeben));
+                Console.WriteLine($"Spieler {abstimmenderSpieler.Nummer}: {abstimmenderSpieler.Name}, wähle einen Spieler (Nummer), den du lynchen möchtest:\n");
+                foreach (var spieler in SpielerListe.Where(s => s.IstAmLeben))
+                {
+                    Console.WriteLine($"Spieler {spieler.Nummer}: {spieler.Name}");
+                }
+                
 
-            var gelynchterSpieler = SpielerListe.First(s => s.Nummer == gewaehlteNummer);
-            gelynchterSpieler.IstAmLeben = false;
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"{gelynchterSpieler.Name} wurde gelyncht. Rolle: {gelynchterSpieler.Rolle}");
-            Console.ResetColor();
+                int gewaehlteNummer;
+                do
+                {
+                    Console.Write("\nDeine Stimme geht an Spieler (Nummer): ");
+                } while (!int.TryParse(Console.ReadLine(), out gewaehlteNummer) || !stimmen.ContainsKey(gewaehlteNummer));
+
+                stimmen[gewaehlteNummer]++;
+                Console.ReadKey();
+                Console.Clear();
+            }
+
+            // Spieler mit den meisten Stimmen ermitteln
+            var maxStimmen = stimmen.Values.Max();
+            var kandidaten = stimmen.Where(s => s.Value == maxStimmen).Select(s => s.Key).ToList();
+
+            if (kandidaten.Count > 1)
+            {
+                // Gleichstand
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Es gibt einen Gleichstand an Stimmen. Niemand wird gelyncht.");
+                Console.ResetColor();
+            }
+            else
+            {
+                // Spieler mit den meisten Stimmen gelyncht
+                var gelynchterNummer = kandidaten.First();
+                var gelynchterSpieler = SpielerListe.First(s => s.Nummer == gelynchterNummer);
+                gelynchterSpieler.IstAmLeben = false;
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"{gelynchterSpieler.Name} wurde gelyncht. Rolle: {gelynchterSpieler.Rolle}");
+                Console.ResetColor();
+            }
+
             Console.ReadKey();
             Console.Clear();
         }
@@ -180,7 +218,7 @@ namespace WerwolfFIUS2024
             return wölfeLeben && dorfbewohnerLeben;
         }
 
-        private void BeendeSpiel() //sollte das obige nicht der Fal sein, wird das Spiel zugnsten der Wölfe oder Dorfbewohner beendet. 
+        private void BeendeSpiel() //sollte das obige nicht der Fall sein, wird das Spiel zugnsten der Wölfe oder Dorfbewohner beendet. 
         {
             bool wölfeLeben = SpielerListe.Any(s => s.Rolle == "Werwolf" && s.IstAmLeben);
             Console.ForegroundColor = ConsoleColor.Cyan;
